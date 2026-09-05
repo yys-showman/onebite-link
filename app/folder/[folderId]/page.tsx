@@ -19,12 +19,14 @@ export default async function FolderPage({
   const links = mockLinks.filter((link) => link.folderId === folderId);
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col bg-[var(--background)]">
       <Header />
       <div className="flex flex-1">
         <Sidebar folders={mockFolders} />
-        <main className="flex-1 p-6">
-          <h1 className="mb-4 text-lg font-bold text-zinc-900">{folder.name}</h1>
+        <main className="flex-1 p-8">
+          <h1 className="mb-6 text-2xl font-semibold tracking-tight text-[var(--text)]">
+            {folder.name}
+          </h1>
           <LinkGrid links={links} />
         </main>
       </div>

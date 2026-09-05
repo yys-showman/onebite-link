@@ -17,10 +17,10 @@ export default function FolderList({
           <li key={folder.id}>
             <Link
               href={`/folder/${folder.id}`}
-              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
+              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors duration-300 ${
                 isActive
-                  ? "bg-zinc-200 font-medium text-zinc-900"
-                  : "text-zinc-600 hover:bg-zinc-100"
+                  ? "bg-[var(--divider)] font-medium text-[var(--text)]"
+                  : "text-[var(--text-sub)] hover:bg-[var(--divider)]"
               }`}
             >
               <FolderIcon className="h-4 w-4 shrink-0" />

@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Folder } from "@/lib/types";
+import { useFolders } from "@/lib/folders-context";
 import { LayersIcon } from "./icons";
 import FolderList from "./folder-list";
 
-export default function Sidebar({ folders }: { folders: Folder[] }) {
+export default function Sidebar() {
   const pathname = usePathname();
+  const { folders } = useFolders();
   const selectedFolderId = pathname.startsWith("/folder/")
     ? decodeURIComponent(pathname.split("/")[2] ?? "")
     : null;

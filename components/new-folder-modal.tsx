@@ -12,6 +12,7 @@ export default function NewFolderModal({
 }) {
   const { addFolder } = useFolders();
   const [name, setName] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!open) {
     return null;
@@ -22,12 +23,17 @@ export default function NewFolderModal({
     onClose();
   };
 
-  const handleSave = () => {
-    if (!name.trim()) {
+  const handleSave = async () => {
+    if (!name.trim() || isSubmitting) {
       return;
     }
-    addFolder(name.trim());
-    handleClose();
+    setIsSubmitting(true);
+    try {
+      await addFolder(name.trim());
+      handleClose();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -51,6 +57,7 @@ export default function NewFolderModal({
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSave()}
             placeholder="폴더 이름을 입력하세요"
+            disabled={isSubmitting}
             className="w-full rounded-[10px] border border-[var(--border)] px-4 py-3 text-[17px] text-[var(--text)] placeholder:text-[var(--placeholder)] transition-[border-color,box-shadow] duration-300 focus:border-[var(--accent)] focus:shadow-[0_0_0_3px_rgba(0,113,227,0.2)] focus:outline-none"
           />
         </div>
@@ -58,14 +65,15 @@ export default function NewFolderModal({
           <button
             type="button"
             onClick={handleClose}
-            className="text-sm font-medium text-[var(--accent)] transition-colors duration-300 hover:underline"
+            disabled={isSubmitting}
+            className="text-sm font-medium text-[var(--accent)] transition-colors duration-300 hover:underline disabled:cursor-not-allowed disabled:opacity-30"
           >
             취소
           </button>
           <button
             type="button"
             onClick={handleSave}
-            disabled={!name.trim()}
+            disabled={!name.trim() || isSubmitting}
             className="rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-30"
           >
             저장

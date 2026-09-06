@@ -3,13 +3,17 @@
 import { useState } from "react";
 import { LinkItem } from "@/lib/types";
 import { getDomain } from "@/lib/utils";
+import { useFolders } from "@/lib/folders-context";
 import { useLinks } from "@/lib/links-context";
-import { LinkGlyph, TrashIcon } from "./icons";
+import { LinkGlyph, PencilIcon, TrashIcon } from "./icons";
 import DeleteLinkModal from "./delete-link-modal";
+import EditLinkModal from "./edit-link-modal";
 
 export default function LinkCard({ link }: { link: LinkItem }) {
+  const { folders } = useFolders();
   const { deleteLink } = useLinks();
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
   const handleConfirmDelete = () => {
     deleteLink(link.id);
@@ -48,22 +52,42 @@ export default function LinkCard({ link }: { link: LinkItem }) {
           </span>
         </div>
       </a>
-      <button
-        type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          setShowConfirm(true);
-        }}
-        aria-label={`${link.title} 링크 삭제`}
-        className="absolute top-2 right-2 rounded-md bg-[var(--background)]/90 p-1.5 text-[var(--text-sub)] opacity-0 shadow-[0_1px_3px_rgba(0,0,0,0.08)] transition-opacity duration-300 hover:text-[var(--error)] group-hover:opacity-100"
-      >
-        <TrashIcon className="h-4 w-4" />
-      </button>
+      <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowEdit(true);
+          }}
+          aria-label={`${link.title} 링크 수정`}
+          className="rounded-md bg-[var(--background)]/90 p-1.5 text-[var(--text-sub)] shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover:text-[var(--accent)]"
+        >
+          <PencilIcon className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowConfirm(true);
+          }}
+          aria-label={`${link.title} 링크 삭제`}
+          className="rounded-md bg-[var(--background)]/90 p-1.5 text-[var(--text-sub)] shadow-[0_1px_3px_rgba(0,0,0,0.08)] hover:text-[var(--error)]"
+        >
+          <TrashIcon className="h-4 w-4" />
+        </button>
+      </div>
       <DeleteLinkModal
         link={showConfirm ? link : null}
         onCancel={() => setShowConfirm(false)}
         onConfirm={handleConfirmDelete}
       />
+      {showEdit && (
+        <EditLinkModal
+          link={link}
+          folders={folders}
+          onClose={() => setShowEdit(false)}
+        />
+      )}
     </div>
   );
 }

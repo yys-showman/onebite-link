@@ -7,6 +7,7 @@ import { mockFolders } from "./mock-data";
 interface FoldersContextValue {
   folders: Folder[];
   addFolder: (name: string) => Folder;
+  deleteFolder: (id: string) => void;
 }
 
 const FoldersContext = createContext<FoldersContextValue | null>(null);
@@ -20,8 +21,12 @@ export function FoldersProvider({ children }: { children: ReactNode }) {
     return folder;
   };
 
+  const deleteFolder = (id: string) => {
+    setFolders((prev) => prev.filter((folder) => folder.id !== id));
+  };
+
   return (
-    <FoldersContext.Provider value={{ folders, addFolder }}>
+    <FoldersContext.Provider value={{ folders, addFolder, deleteFolder }}>
       {children}
     </FoldersContext.Provider>
   );

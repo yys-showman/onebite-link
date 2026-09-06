@@ -19,8 +19,8 @@ export default function FolderList({
   const [folderToDelete, setFolderToDelete] = useState<Folder | null>(null);
   const [folderToEdit, setFolderToEdit] = useState<Folder | null>(null);
 
-  const handleConfirmDelete = (folder: Folder) => {
-    deleteFolder(folder.id);
+  const handleConfirmDelete = async (folder: Folder) => {
+    await deleteFolder(folder.id);
     setFolderToDelete(null);
   };
 

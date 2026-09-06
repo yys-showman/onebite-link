@@ -18,7 +18,7 @@ export default function NewLinkForm() {
   const [error, setError] = useState<string | null>(null);
 
   const handleSave = async () => {
-    if (!url) {
+    if (!url || isSaving) {
       return;
     }
     setIsSaving(true);
@@ -30,7 +30,7 @@ export default function NewLinkForm() {
         throw new Error(data.error ?? "오픈 그래프 정보를 가져오지 못했습니다.");
       }
       const info = data as OpenGraphInfo;
-      addLink({
+      await addLink({
         url: info.url,
         title: info.title,
         description: info.description,

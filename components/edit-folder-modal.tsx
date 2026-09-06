@@ -18,11 +18,11 @@ export default function EditFolderModal({
     return null;
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!name.trim()) {
       return;
     }
-    renameFolder(folder.id, name.trim());
+    await renameFolder(folder.id, name.trim());
     onClose();
   };
 

@@ -15,6 +15,7 @@ interface AddLinkInput {
 interface LinksContextValue {
   links: LinkItem[];
   addLink: (input: AddLinkInput) => LinkItem;
+  deleteLink: (id: string) => void;
 }
 
 const LinksContext = createContext<LinksContextValue | null>(null);
@@ -28,8 +29,12 @@ export function LinksProvider({ children }: { children: ReactNode }) {
     return link;
   };
 
+  const deleteLink = (id: string) => {
+    setLinks((prev) => prev.filter((link) => link.id !== id));
+  };
+
   return (
-    <LinksContext.Provider value={{ links, addLink }}>
+    <LinksContext.Provider value={{ links, addLink, deleteLink }}>
       {children}
     </LinksContext.Provider>
   );

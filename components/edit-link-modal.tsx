@@ -19,11 +19,11 @@ export default function EditLinkModal({
   const [description, setDescription] = useState(link.description);
   const [folderId, setFolderId] = useState<string | null>(link.folderId);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!title.trim()) {
       return;
     }
-    updateLink(link.id, {
+    await updateLink(link.id, {
       title: title.trim(),
       description: description.trim(),
       folderId,

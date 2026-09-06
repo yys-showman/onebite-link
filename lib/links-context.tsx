@@ -21,7 +21,7 @@ interface UpdateLinkInput {
 interface LinksContextValue {
   links: LinkItem[];
   addLink: (input: AddLinkInput) => Promise<LinkItem>;
-  deleteLink: (id: string) => void;
+  deleteLink: (id: string) => Promise<void>;
   updateLink: (id: string, input: UpdateLinkInput) => Promise<void>;
 }
 
@@ -84,7 +84,17 @@ export function LinksProvider({ children }: { children: ReactNode }) {
     return link;
   };
 
-  const deleteLink = (id: string) => {
+  const deleteLink = async (id: string) => {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("links")
+      .delete()
+      .eq("id", Number(id));
+
+    if (error) {
+      throw error;
+    }
+
     setLinks((prev) => prev.filter((link) => link.id !== id));
   };
 

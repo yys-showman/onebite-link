@@ -15,8 +15,8 @@ export default function LinkCard({ link }: { link: LinkItem }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
 
-  const handleConfirmDelete = () => {
-    deleteLink(link.id);
+  const handleConfirmDelete = async () => {
+    await deleteLink(link.id);
     setShowConfirm(false);
   };
 

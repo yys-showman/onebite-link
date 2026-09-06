@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Folder } from "@/lib/types";
 import { useFolders } from "@/lib/folders-context";
-import { FolderIcon, TrashIcon } from "./icons";
+import { FolderIcon, PencilIcon, TrashIcon } from "./icons";
 import DeleteFolderModal from "./delete-folder-modal";
+import EditFolderModal from "./edit-folder-modal";
 
 export default function FolderList({
   folders,
@@ -16,6 +17,7 @@ export default function FolderList({
 }) {
   const { deleteFolder } = useFolders();
   const [folderToDelete, setFolderToDelete] = useState<Folder | null>(null);
+  const [folderToEdit, setFolderToEdit] = useState<Folder | null>(null);
 
   const handleConfirmDelete = (folder: Folder) => {
     deleteFolder(folder.id);
@@ -31,7 +33,7 @@ export default function FolderList({
             <li key={folder.id} className="group relative">
               <Link
                 href={`/folder/${folder.id}`}
-                className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 pr-9 text-left text-sm transition-colors duration-300 ${
+                className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 pr-16 text-left text-sm transition-colors duration-300 ${
                   isActive
                     ? "bg-[var(--divider)] font-medium text-[var(--text)]"
                     : "text-[var(--text-sub)] hover:bg-[var(--divider)]"
@@ -40,17 +42,30 @@ export default function FolderList({
                 <FolderIcon className="h-4 w-4 shrink-0" />
                 <span className="truncate">{folder.name}</span>
               </Link>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setFolderToDelete(folder);
-                }}
-                aria-label={`${folder.name} 폴더 삭제`}
-                className="absolute top-1/2 right-2 -translate-y-1/2 rounded-md p-1 text-[var(--text-sub)] opacity-0 transition-opacity duration-300 hover:text-[var(--error)] group-hover:opacity-100"
-              >
-                <TrashIcon className="h-4 w-4" />
-              </button>
+              <div className="absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-1 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setFolderToEdit(folder);
+                  }}
+                  aria-label={`${folder.name} 폴더 수정`}
+                  className="rounded-md p-1 text-[var(--text-sub)] hover:text-[var(--accent)]"
+                >
+                  <PencilIcon className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setFolderToDelete(folder);
+                  }}
+                  aria-label={`${folder.name} 폴더 삭제`}
+                  className="rounded-md p-1 text-[var(--text-sub)] hover:text-[var(--error)]"
+                >
+                  <TrashIcon className="h-4 w-4" />
+                </button>
+              </div>
             </li>
           );
         })}
@@ -59,6 +74,11 @@ export default function FolderList({
         folder={folderToDelete}
         onCancel={() => setFolderToDelete(null)}
         onConfirm={handleConfirmDelete}
+      />
+      <EditFolderModal
+        key={folderToEdit?.id}
+        folder={folderToEdit}
+        onClose={() => setFolderToEdit(null)}
       />
     </>
   );

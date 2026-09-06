@@ -5,13 +5,14 @@ import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
 import LinkGrid from "@/components/link-grid";
 import { useFolders } from "@/lib/folders-context";
-import { mockLinks } from "@/lib/mock-data";
+import { useLinks } from "@/lib/links-context";
 
 export default function FolderPage() {
   const { folderId } = useParams<{ folderId: string }>();
   const { folders } = useFolders();
+  const { links: allLinks } = useLinks();
   const folder = folders.find((item) => item.id === folderId);
-  const links = mockLinks.filter((link) => link.folderId === folderId);
+  const links = allLinks.filter((link) => link.folderId === folderId);
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--background)]">

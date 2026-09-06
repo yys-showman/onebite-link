@@ -8,5 +8,13 @@ export interface LinkItem {
   title: string;
   url: string;
   description: string;
+  thumbnail: string | null;
   folderId: string | null;
+}
+
+export interface OpenGraphInfo {
+  title: string;
+  description: string;
+  thumbnail: string | null;
+  url: string;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
@@ -32,6 +33,16 @@ export default function LoginPage() {
   }, [toastMessage]);
 
   const canSubmit = email.trim() && password && !isSubmitting;
+
+  const handleKakaoLogin = async () => {
+    const supabase = createClient();
+    await supabase.auth.signInWithOAuth({
+      provider: "kakao",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  };
 
   const handleLogin = async () => {
     if (!canSubmit) {
@@ -105,6 +116,19 @@ export default function LoginPage() {
             className="mt-2 rounded-full bg-[var(--accent)] px-6 py-3 text-[17px] font-medium text-white transition-colors duration-300 hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-30"
           >
             {isSubmitting ? "로그인 중..." : "로그인"}
+          </button>
+          <button
+            type="button"
+            onClick={handleKakaoLogin}
+            className="relative h-[45px] w-full overflow-hidden rounded-[10px]"
+          >
+            <Image
+              src="/kakao_login_medium_wide.png"
+              alt="카카오 로그인"
+              fill
+              sizes="336px"
+              className="object-contain"
+            />
           </button>
           <Link
             href="/forgot-password"

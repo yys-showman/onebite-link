@@ -34,7 +34,19 @@ export const updateSession = async (request: NextRequest) => {
   );
 
   // Refresh the auth token if needed
-  await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const { pathname } = request.nextUrl;
+  const isProtectedRoute =
+    pathname === "/" || pathname === "/new" || pathname.startsWith("/folder");
+
+  if (!user && isProtectedRoute) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
 
   return supabaseResponse
 };

@@ -63,6 +63,13 @@ export default function Sidebar() {
         <LogoutIcon className="h-4 w-4 shrink-0" />
         {isLoggingOut ? "로그아웃 중..." : "로그아웃"}
       </button>
+
+      <Link
+        href="/privacy"
+        className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs text-[var(--text-sub)] transition-colors duration-300 hover:bg-[var(--divider)]"
+      >
+        개인정보 처리방침
+      </Link>
     </aside>
   );
 }

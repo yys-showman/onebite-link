@@ -137,6 +137,13 @@ export default function SignupPage() {
           >
             로그인 페이지로 이동
           </Link>
+          <p className="text-center text-xs text-[var(--text-sub)]">
+            가입 시{" "}
+            <Link href="/privacy" className="underline">
+              개인정보 처리방침
+            </Link>
+            에 동의하게 됩니다.
+          </p>
         </div>
       </div>
     </div>
